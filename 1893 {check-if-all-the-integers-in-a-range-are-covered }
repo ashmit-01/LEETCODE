@@ -1,0 +1,25 @@
+#include <stdbool.h>
+
+bool isCovered(int** ranges, int rangesSize, int* rangesColSize, int left, int right) {
+
+    int diff[52] = {0};
+
+    for (int i = 0; i < rangesSize; ++i) {
+        int l = ranges[i][0];
+        int r = ranges[i][1];
+        if (l < 1) l = 1;
+        if (r > 50) r = 50;
+        if (l > r) continue;
+        diff[l] += 1;
+        if (r + 1 <= 51) diff[r + 1] -= 1;
+    }
+
+    int cover = 0;
+    for (int x = 1; x <= 50; ++x) {
+        cover += diff[x];
+        if (x >= left && x <= right && cover <= 0) {
+            return false; 
+        }
+    }
+    return true;
+}
